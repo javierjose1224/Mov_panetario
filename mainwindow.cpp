@@ -7,7 +7,6 @@
 #include <fstream>
 #include <QDebug>
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -29,18 +28,24 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer,SIGNAL(timeout()),this,SLOT(actualizar()));
     timer->start(dt);
 
-    LISTA.append(new Graficar(0,0,0,0,50000,200));
-    LISTA.append(new Graficar(-5000,0,0,-2,70,70));
-    LISTA.append(new Graficar(5000,0,0,-2,70,70));
-    LISTA.append(new Graficar(0,-5000,2,0,70,70));
-    LISTA.append(new Graficar(0,5000,-2,0,70,70));
-    //LISTA.append(new Graficar(0,0,0,0,50000,200));
+//    LISTA.append(new Graficar(0,0,0,0,50000,200));
+//    LISTA.append(new Graficar(-5000,0,0,-2,70,70));
+//    LISTA.append(new Graficar(5000,0,0,2,70,70));
+//    LISTA.append(new Graficar(0,-5000,2,0,70,70));
+//    LISTA.append(new Graficar(0,5000,-2,0,70,70));
 
+    LISTA.append(new Graficar(0,-7000,2,0,70,120));
+    LISTA.append(new Graficar(0,0,0,0,70000,300));
+    LISTA.append(new Graficar(4000,5000,-1.6,1.2,25,100));
 
     for(int i=0;i<LISTA.size();i++)
     {
         LISTA.at(i)->Actualizar();
         scene->addItem(LISTA.at(i));
+    }
+    for(int i=0;i<LISTA.size();i++)
+    {
+        qDebug()<<LISTA.at(i)->getEsf()->getPosx()<<"\t"<<LISTA.at(i)->getEsf()->getPosy();
     }
 
 }
@@ -55,7 +60,6 @@ MainWindow::~MainWindow()
 void MainWindow::actualizar()
 {
     //Hace la interacción entre todos los objetos en si
-
     //cada planeta con cada planeta
     for (int i=0; i<LISTA.size();i++)
     {
@@ -64,7 +68,6 @@ void MainWindow::actualizar()
             if(i!=j)    //para que nunca se compare con el mismo
             {
                 LISTA.at(i) -> getEsf() -> Acacelx(*(LISTA.at(j)->getEsf()));
-
                 LISTA.at(i) -> getEsf() -> Acacely(*(LISTA.at(j)->getEsf()));
             }
         }
@@ -76,10 +79,8 @@ void MainWindow::actualizar()
     //actualiza cada dato
 }
 
-//función que guarda todo en un archivo
 void MainWindow::GUARDARDATOS(double posx, double posy,   double vx, double vy, double masa, double radio, int planetas)
 {
-
     QString numS, posxS, posyS,mass,rad,vvx,vvy, w,planets;
     posxS.number(posx);
     //posxS=QString::number(posx);
@@ -89,7 +90,7 @@ void MainWindow::GUARDARDATOS(double posx, double posy,   double vx, double vy, 
     vvx=QString::number(vx);
     vvy=QString::number(vy);
     planets=QString::number(planetas);
-    w="PLANETA NUMERO: "+planets+"     "+posxS+"    "+posyS+"    "+mass+"    "+rad+"    "+vvx+"    "+vvy+ '\n' ;
+    w="PLANETA NUMERO: "+planets+"     "+posxS+"    "+posyS+"    "+mass+"    "+rad+"    "+vvx+"    "+vvy+ '\n';
 
     QFile PLANETAS("PLANETAS.txt");
 
@@ -116,11 +117,12 @@ void MainWindow::on_pushButton_2_clicked()
     radio= ui->spinBox_6->value();
 
     LISTA.push_back(new Graficar(posx,posy,vx,vy, masa,radio));
+
     scene->addItem(LISTA.back());
-    GUARDARDATOS( posx, posy,  vx,  vy,  masa,  radio, planetas);
+    GUARDARDATOS(posx,posy,vx,vy,masa,radio,planetas);
     for(int i=0;i<LISTA.size();i++)
     {
-            LISTA.at(i)->Actualizar();
-            scene->addItem(LISTA.at(i));
+        LISTA.at(i)->Actualizar();
+        scene->addItem(LISTA.at(i));
     }
 }

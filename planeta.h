@@ -2,7 +2,7 @@
 #define PLANETA_H
 
 #include <math.h>
-#define dt 10
+#define dt 1
 #define G 1
 
 class Planeta

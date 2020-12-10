@@ -14,7 +14,6 @@ void Planeta::Asignar(float pxi, float pyi, float vxi, float vyi, float m, float
     acely=0;
     Masa=m;
     radio=rad;
-
 }
 
 void Planeta::actualizar() //se actualizan todos los datos//
